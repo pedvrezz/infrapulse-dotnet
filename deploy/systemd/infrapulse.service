@@ -1,0 +1,21 @@
+[Unit]
+Description=InfraPulse endpoint monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=infrapulse
+Group=infrapulse
+WorkingDirectory=/etc/infrapulse
+ExecStart=/usr/local/bin/infrapulse --config /etc/infrapulse/monitor.json --format prometheus --output /var/lib/node_exporter/textfile_collector/infrapulse.prom --interval 30
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/node_exporter/textfile_collector
+
+[Install]
+WantedBy=multi-user.target
